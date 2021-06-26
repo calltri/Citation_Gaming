@@ -48,9 +48,10 @@ def populate_table(conn, fileName, sql):
         line = file.readline()
         if not line:
             break
-
+	print(line)
         line.strip()
-        row = line.split()
+        row = line.split('\t')
+	print(row)
 
         # Try to convert to appropriate datatypes
         if fileName == "PaperAuthorAffiliations.txt":
@@ -72,10 +73,12 @@ def convert_PaperAuthorAffiliations_types(row):
         row in the appropriate data types and tuple
     '''
     try:
-        row[0] = (long)row[0]
-        row[1] = (long)row[1]
-        row[2] = (long)row[2]
-        row[3] = (int)row[3]
+        row[0] = int(row[0])
+	row[1] = int(row[1])
+        if row[2] != '':
+		row[2] = int(row[2])
+        row[3] = int(row[3])
+	print("successful conversions")
         row = tuple(row)
         return row
     except ValueError:
@@ -92,9 +95,9 @@ def main():
     conn = create_connection(database)
     if conn is not None:
         with conn:
-            create_table(conn, sql_scripts.sql_create_affiliations_table)
+            create_table(conn, sql_scripts.sql_create_paperauthoraffiliations_table)
 
-            populate_affiliation_table(conn, "PaperAuthorAffiliations.txt", sql_scripts.sql_populate_affiliations)
+            populate_table(conn, "PaperAuthorAffiliations.txt", sql_scripts.sql_populate_paperauthoraffiliations)
 
     else:
         print("Error! cannot access database")
