@@ -3,9 +3,11 @@ from neo4j import GraphDatabase
 import networkx as nx
 import tqdm
 import pdb
+import os
 
 def evaluate_network():
-    data = pd.read_csv("criminology_citations.csv", header=0)
+    fileName = os.path.join("input_data", "criminology_citations.csv")
+    data = pd.read_csv(fileName, header=0)
     network = find_network(data)
     G = setup_graph(data)
     print(compute_in_citations(network, G))
