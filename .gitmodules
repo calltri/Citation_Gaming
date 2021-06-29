@@ -1,0 +1,3 @@
+[submodule "journal-citation-cartels"]
+	path = journal-citation-cartels
+	url = https://github.com/skojaku/journal-citation-cartels.git

@@ -4,13 +4,21 @@ import networkx as nx
 import tqdm
 import pdb
 import os
+import sys,os
+import matplotlib.pyplot as plt
+sys.path.append(os.path.abspath(os.path.join("journal-citation-cartels/libs/cidre")))
+from cidre import cidre, filters
+from cidre import cidre, filters, draw
+import numpy as np
 
 def evaluate_network():
     fileName = os.path.join("input_data", "criminology_citations.csv")
     data = pd.read_csv(fileName, header=0)
     network = find_network(data)
     G = setup_graph(data)
-    print(compute_in_citations(network, G))
+    print(call_cidre(G))
+
+    #print(compute_in_citations(network, G))
     
 
 
@@ -84,3 +92,26 @@ def setup_graph(data):
     return G
 
 
+
+def call_cidre(graph, theta = 0.15):
+    '''Calls cidre on a given graph
+
+    Args:
+        graph (DiGraph)
+    '''
+    # Generate network
+    W = nx.adjacency_matrix(graph)
+    W.data = np.random.poisson(10, W.data.size)
+    W_threshold = W.copy()
+    W_threshold.data = np.random.poisson(15, W_threshold.data.size)
+
+    # Generate random community memberships
+    community_ids = np.random.choice(2, W.shape[0], replace=True).astype(int)
+
+    is_excessive_func = filters.get_dcsbm_threshold_filter(
+        W, W_threshold, community_ids
+    )
+
+    # Detect the cartel groups
+    citation_group_table = cidre.detect(W, theta, is_excessive_func)
+    return citation_group_table
