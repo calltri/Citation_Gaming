@@ -97,16 +97,30 @@ def call_cidre(graph, theta = 0.15):
     '''Calls cidre on a given graph
 
     Args:
+        network (list of membership for all groups, 0=none)
         graph (DiGraph)
     '''
     # Generate network
     W = nx.adjacency_matrix(graph)
-    W.data = np.random.poisson(10, W.data.size)
+    print("W:")
+    print(W[:20])
+    # Setting the weights in the matrix for some reason? 
+    #W.data = np.random.poisson(10, W.data.size)
     W_threshold = W.copy()
-    W_threshold.data = np.random.poisson(15, W_threshold.data.size)
+    print("Threshold:")
+    print(W_threshold[:20])
+    # Setting weights for the threshold too. Why?
+    #W_threshold.data = np.random.poisson(15, W_threshold.data.size)
 
     # Generate random community memberships
     community_ids = np.random.choice(2, W.shape[0], replace=True).astype(int)
+
+    print("W:")
+    print(W[:20])
+    print("Threshold:")
+    print(W_threshold[:20])
+    print("comunity id:")
+    print(community_ids[50:])
 
     is_excessive_func = filters.get_dcsbm_threshold_filter(
         W, W_threshold, community_ids
@@ -115,3 +129,11 @@ def call_cidre(graph, theta = 0.15):
     # Detect the cartel groups
     citation_group_table = cidre.detect(W, theta, is_excessive_func)
     return citation_group_table
+
+    '''
+    How it works:
+    In construct_network downloads + compiles data into frames
+    No idea how weights work into this - but crashes without them?
+    lots of pickling to compute the data
+    '''
+
