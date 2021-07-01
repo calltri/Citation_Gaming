@@ -2,3 +2,6 @@ input_data
 __pycache__
 db
 *.pyc
+*.swp
+*.db
+*.save
