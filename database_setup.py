@@ -65,7 +65,7 @@ def populate_table(conn, fileName, sql):
         # Try to convert to appropriate datatypes
         if fileName == "PaperAuthorAffiliations.txt":
             row = convert_PaperAuthorAffiliations_types(row)
-        elif: fileName == "Papers.txt":
+        elif fileName == "Papers.txt":
             row = convert_papers_types(row)
         else:
             print("Error, file has not been set up yet in populate table")
@@ -91,7 +91,7 @@ def convert_PaperAuthorAffiliations_types(row):
         if row[2] != '':
 	    	row[2] = int(row[2])
         row[3] = int(row[3])
-	    print("successful conversions")
+        print("successful conversions")
         row = tuple(row)
         return row
     except ValueError:

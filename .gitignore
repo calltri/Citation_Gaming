@@ -3,3 +3,6 @@ __pycache__
 db
 *.pyc
 .ipynb_checkpoints/
+*.swp
+*.db
+*.save

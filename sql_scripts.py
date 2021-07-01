@@ -26,12 +26,13 @@ sql_populate_affiliations = ''' INSERT INTO Affiliations
                             VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?); '''
 
 sql_create_paperauthoraffiliations_table = '''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations (
-                            paperId long PRIMARY KEY,
+                            paperId long,
                             authorId long,
                             affiliationId long,
                             authorSequenceNumber int,
                             originalAuthor varchar(60),
-                            originalAffiliation varchar(60)
+                            originalAffiliation varchar(60),
+                            PRIMARY KEY (paperId, authorId, affiliationId)
 );'''
 sql_delete_tables.append("DROP TABLE IF EXISTS PaperAuthorAffiliations;")
 
@@ -73,4 +74,5 @@ sql_populate_papers = """INSERT INTO Papers (
                         familyId,
                         familyRank)
                         VALUES (?,?,?,?,?,?,?,?,?,?,?)
-)
+                       );"""
+
