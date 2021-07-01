@@ -4,15 +4,16 @@ import sql_scripts
 import os
 
 
-def create_connection(db_file):
+def create_connection():
     """ create a database connection to the SQLite database
         specified by db_file
-    :param db_file: database file
     :return: Connection object or None
     """
+    db_file = r"db\pythonsqlite.db"
     conn = None
     try:
         conn = sqlite3.connect(db_file)
+        conn.text_factory = str
         conn.isolation_level = None
     except Error as e:
         print(e)
@@ -125,12 +126,12 @@ def convert_papers_types(row):
         return None
 
 def main():
-    database = r"db\pythonsqlite.db"
+    
     url = "https://magasuscisi.blob.core.windows.net/mag-2021-05-24/mag/PaperAuthorAffiliations.txt"
 
 
     # create a database connection
-    conn = create_connection(database)
+    conn = create_connection()
     if conn is not None:
         with conn:
             create_table(conn, sql_scripts.sql_create_paperauthoraffiliations_table)
