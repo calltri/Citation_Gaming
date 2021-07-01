@@ -32,6 +32,14 @@ def create_table(conn, create_table_sql):
     except Error as e:
         print(e)
 
+def drop_tables(conn, sql_list):
+    """Drops all tables in sql_list
+    @param sql_list (list of sql commands)
+    """
+    c = conn.cursor()
+    for sql in sql_list:
+        c.execute(sql)
+
 def populate_table(conn, fileName, sql):
     """
     Create a new project into the projects table
@@ -79,7 +87,7 @@ def convert_PaperAuthorAffiliations_types(row):
     '''
     try:
         row[0] = int(row[0])
-	    row[1] = int(row[1])
+        row[1] = int(row[1])
         if row[2] != '':
 	    	row[2] = int(row[2])
         row[3] = int(row[3])
@@ -103,7 +111,7 @@ def convert_papers_types(row):
     new_row = []
     try:
         new_row.append(int(row[0]))
-	    new_row.append(int(row[1]))
+        new_row.append(int(row[1]))
         new_row.append(int(row[2]))
         new_row.append(row[4])
         new_row.append(int(row[7]))
@@ -134,6 +142,7 @@ def main():
     conn = create_connection()
     if conn is not None:
         with conn:
+            drop_tables(conn, sql_scripts.sql_delete_tables)
             create_table(conn, sql_scripts.sql_create_paperauthoraffiliations_table)
 
             populate_table(conn, "PaperAuthorAffiliations.txt", sql_scripts.sql_populate_paperauthoraffiliations)

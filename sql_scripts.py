@@ -1,3 +1,5 @@
+sql_delete_tables = []
+
 sql_create_affiliations_table = """ CREATE TABLE IF NOT EXISTS Affiliations (
                                     affiliationId integer PRIMARY KEY,
                                     rank integer,
@@ -14,6 +16,7 @@ sql_create_affiliations_table = """ CREATE TABLE IF NOT EXISTS Affiliations (
                                     longitude float,
                                     createdDate DATETIME
                                 ); """
+sql_delete_tables.append("DROP TABLE IF EXISTS Affiliations;")
 
 sql_populate_affiliations = ''' INSERT INTO Affiliations 
                                 (affiliationId, rank, normalizedName, 
@@ -30,7 +33,7 @@ sql_create_paperauthoraffiliations_table = '''CREATE TABLE IF NOT EXISTS PaperAu
                             originalAuthor varchar(60),
                             originalAffiliation varchar(60)
 );'''
-
+sql_delete_tables.append("DROP TABLE IF EXISTS PaperAuthorAffiliations;")
 
 
 sql_populate_paperauthoraffiliations = '''INSERT INTO PaperAuthorAffiliations (
@@ -55,6 +58,7 @@ sql_create_papers_table = """ CREATE TABLE IF NOT EXISTS Papers (
                             familyId long int,
                             familyRank int
                         );"""
+sql_delete_tables.append("DROP TABLE IF EXISTS Papers;")
 
 sql_populate_papers = """INSERT INTO Papers (
                         paperId,
