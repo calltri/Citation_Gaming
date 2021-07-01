@@ -12,8 +12,15 @@ sql_create_affiliations_table = """ CREATE TABLE IF NOT EXISTS Affiliations (
                                     iso3166Code Char(2),
                                     latitude float,
                                     longitude float,
-                                    createdDate VARCHAR(60)
+                                    createdDate DATETIME
                                 ); """
+
+sql_populate_affiliations = ''' INSERT INTO Affiliations 
+                                (affiliationId, rank, normalizedName, 
+                                displayName, gridId, officialPage, wikiPage, 
+                                paperCount, paperFamilyCount, citationCount, 
+                                iso3166Code, latitude, longitude, createdDate)
+                            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?); '''
 
 sql_create_paperauthoraffiliations_table = '''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations (
                             paperId long PRIMARY KEY,
@@ -24,12 +31,7 @@ sql_create_paperauthoraffiliations_table = '''CREATE TABLE IF NOT EXISTS PaperAu
                             originalAffiliation varchar(60)
 );'''
 
-sql_populate_affiliations = ''' INSERT INTO Affiliations 
-                                (affiliationId, rank, normalizedName, 
-                                displayName, gridId, officialPage, wikiPage, 
-                                paperCount, paperFamilyCount, citationCount, 
-                                iso3166Code, latitude, longitude, createdDate)
-                            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?); '''
+
 
 sql_populate_paperauthoraffiliations = '''INSERT INTO PaperAuthorAffiliations (
                             paperId,
@@ -39,3 +41,32 @@ sql_populate_paperauthoraffiliations = '''INSERT INTO PaperAuthorAffiliations (
                             originalAuthor,
                             originalAffiliation)
                             VALUES (?,?,?,?,?,?);'''
+
+sql_create_papers_table = """ CREATE TABLE IF NOT EXISTS Papers (
+                            paperId long int PRIMARY KEY,
+                            rank integer,
+                            doi VARCHAR(60),
+                            paperTitle VARCHAR(60),
+                            year YEAR,
+                            date DATETIME,
+                            journalId long int,
+                            referenceCount long int,
+                            citationCount long int,
+                            familyId long int,
+                            familyRank int
+                        );"""
+
+sql_populate_papers = """INSERT INTO Papers (
+                        paperId,
+                        rank,
+                        doi,
+                        paperTitle,
+                        year,
+                        date,
+                        journalId,
+                        referenceCount,
+                        citationCount,
+                        familyId,
+                        familyRank)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+)

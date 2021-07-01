@@ -56,8 +56,10 @@ def populate_table(conn, fileName, sql):
         # Try to convert to appropriate datatypes
         if fileName == "PaperAuthorAffiliations.txt":
             row = convert_PaperAuthorAffiliations_types(row)
+        elif: fileName == "Papers.txt":
+            row = convert_papers_types(row)
         else:
-            print("Error, file has not been set up yet")
+            print("Error, file has not been set up yet in populate table")
             break
 
         # Insert data into database
@@ -66,6 +68,8 @@ def populate_table(conn, fileName, sql):
 
 def convert_PaperAuthorAffiliations_types(row):
     '''Given a row converts to the appropriate data types
+    Refer to https://docs.microsoft.com/en-us/academic-services/graph/reference-data-schema#paper-author-affiliations
+    for specifics
 
     Args:
         @row (list of str)
@@ -74,17 +78,51 @@ def convert_PaperAuthorAffiliations_types(row):
     '''
     try:
         row[0] = int(row[0])
-	row[1] = int(row[1])
+	    row[1] = int(row[1])
         if row[2] != '':
-		row[2] = int(row[2])
+	    	row[2] = int(row[2])
         row[3] = int(row[3])
-	print("successful conversions")
+	    print("successful conversions")
         row = tuple(row)
         return row
     except ValueError:
         print("Error, incorrect types")
         return None
     
+def convert_papers_types(row):
+    '''Given a row converts to the appropriate data types
+    Refer to https://docs.microsoft.com/en-us/academic-services/graph/reference-data-schema#papers
+    for specifics
+
+    Args:
+        @row (list of str)
+    Returns:
+        row in the appropriate data types and tuple
+    '''
+    new_row = []
+    try:
+        new_row.append(int(row[0]))
+	    new_row.append(int(row[1]))
+        new_row.append(int(row[2]))
+        new_row.append(row[4])
+        new_row.append(int(row[7]))
+        new_row.append(row[8])
+        new_row.append(int(row[11]))
+        new_row.append(int(row[18]))
+        new_row.append(int(row[19]))
+        if row[22] != '':
+            new_row.append(int(row[22]))
+            new_row.append(int(row[23]))
+        else:
+            new_row.append('')
+            new_row.append('')
+
+	    print("successful conversions")
+        new_row = tuple(new_row)
+        return new_row
+    except ValueError:
+        print("Error, incorrect types")
+        return None
 
 def main():
     database = r"db\pythonsqlite.db"
@@ -98,7 +136,7 @@ def main():
             create_table(conn, sql_scripts.sql_create_paperauthoraffiliations_table)
 
             populate_table(conn, "PaperAuthorAffiliations.txt", sql_scripts.sql_populate_paperauthoraffiliations)
-
+            populate_table(conn, "Papers.txt", sql_scripts.sql_populate_papers)
     else:
         print("Error! cannot access database")
         
