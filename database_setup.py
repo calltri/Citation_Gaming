@@ -2,6 +2,7 @@ import sqlite3
 from sqlite3 import Error
 import sql_scripts
 import os
+import sys
 
 
 def create_connection():
@@ -57,10 +58,10 @@ def populate_table(conn, fileName, sql):
         line = file.readline()
         if not line:
             break
-	print(line)
+        print(line)
         line.strip()
         row = line.split('\t')
-	print(row)
+        print(row)
 
         # Try to convert to appropriate datatypes
         if fileName == "PaperAuthorAffiliations.txt":
@@ -134,19 +135,35 @@ def convert_papers_types(row):
         return None
 
 def main():
-    
+    '''
+    For args:
+        Put valid number of a table to load just one table at a time
+        Put all to load everything
+    '''
+    input = sys.argv[1]
     url = "https://magasuscisi.blob.core.windows.net/mag-2021-05-24/mag/PaperAuthorAffiliations.txt"
-
-
+    
     # create a database connection
     conn = create_connection()
     if conn is not None:
         with conn:
-            drop_tables(conn, sql_scripts.sql_delete_tables)
-            create_table(conn, sql_scripts.sql_create_paperauthoraffiliations_table)
-
-            populate_table(conn, "PaperAuthorAffiliations.txt", sql_scripts.sql_populate_paperauthoraffiliations)
-            populate_table(conn, "Papers.txt", sql_scripts.sql_populate_papers)
+            try:
+                # If input is a valid number, just load one table
+                i = int(input)
+                drop_tables(conn, sql_scripts.sql_delete_tables[i])
+                create_table(conn, sql_scripts.sql_create_tables[i])
+                populate_table(conn, sql_scripts.papers[i], sql_scripts.sql_populate_tables[i])
+            except ValueError, IndexError:
+                # Can load all
+                if input == "all":
+                    for i in range(len(sql_scripts.papers)):
+                        drop_tables(conn, sql_scripts.sql_delete_tables[i])
+                        create_table(conn, sql_scripts.sql_create_table[i])
+                        populate_table(conn, sql_scripts.papers[i], sql_scripts.sql_populate_tables[i])
+                    
+                else:
+                    print("Invalid command")
+    
     else:
         print("Error! cannot access database")
         
