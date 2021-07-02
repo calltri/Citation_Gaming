@@ -1,4 +1,60 @@
+papers = []
 sql_delete_tables = []
+sql_create_tables = []
+sql_populate_tables = []
+
+
+sql_papers.append("PaperAuthorAffiliations.txt")
+sql_create_tables.append( '''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations (
+                            paperId long PRIMARY KEY,
+                            authorId long,
+                            affiliationId long,
+                            authorSequenceNumber int,
+                            originalAuthor varchar(60),
+                            originalAffiliation varchar(60)
+);''')
+sql_delete_tables.append("DROP TABLE IF EXISTS PaperAuthorAffiliations;")
+
+
+sql_populate_tables.append( '''INSERT INTO PaperAuthorAffiliations (
+                            paperId,
+                            authorId,
+                            affiliationId,
+                            authorSequenceNumber,
+                            originalAuthor,
+                            originalAffiliation)
+                            VALUES (?,?,?,?,?,?);''')
+
+sql_papers.append("Papers.txt")
+sql_create_tables.append( """ CREATE TABLE IF NOT EXISTS Papers (
+                            paperId long int PRIMARY KEY,
+                            rank integer,
+                            doi VARCHAR(60),
+                            paperTitle VARCHAR(60),
+                            year YEAR,
+                            date DATETIME,
+                            journalId long int,
+                            referenceCount long int,
+                            citationCount long int,
+                            familyId long int,
+                            familyRank int
+                        );""")
+sql_delete_tables.append("DROP TABLE IF EXISTS Papers;")
+
+sql_populate_tables.append( """INSERT INTO Papers (
+                        paperId,
+                        rank,
+                        doi,
+                        paperTitle,
+                        year,
+                        date,
+                        journalId,
+                        referenceCount,
+                        citationCount,
+                        familyId,
+                        familyRank)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+);""")
 
 sql_create_affiliations_table = """ CREATE TABLE IF NOT EXISTS Affiliations (
                                     affiliationId integer PRIMARY KEY,
@@ -24,53 +80,3 @@ sql_populate_affiliations = ''' INSERT INTO Affiliations
                                 paperCount, paperFamilyCount, citationCount, 
                                 iso3166Code, latitude, longitude, createdDate)
                             VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?); '''
-
-sql_create_paperauthoraffiliations_table = '''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations (
-                            paperId long PRIMARY KEY,
-                            authorId long,
-                            affiliationId long,
-                            authorSequenceNumber int,
-                            originalAuthor varchar(60),
-                            originalAffiliation varchar(60)
-);'''
-sql_delete_tables.append("DROP TABLE IF EXISTS PaperAuthorAffiliations;")
-
-
-sql_populate_paperauthoraffiliations = '''INSERT INTO PaperAuthorAffiliations (
-                            paperId,
-                            authorId,
-                            affiliationId,
-                            authorSequenceNumber,
-                            originalAuthor,
-                            originalAffiliation)
-                            VALUES (?,?,?,?,?,?);'''
-
-sql_create_papers_table = """ CREATE TABLE IF NOT EXISTS Papers (
-                            paperId long int PRIMARY KEY,
-                            rank integer,
-                            doi VARCHAR(60),
-                            paperTitle VARCHAR(60),
-                            year YEAR,
-                            date DATETIME,
-                            journalId long int,
-                            referenceCount long int,
-                            citationCount long int,
-                            familyId long int,
-                            familyRank int
-                        );"""
-sql_delete_tables.append("DROP TABLE IF EXISTS Papers;")
-
-sql_populate_papers = """INSERT INTO Papers (
-                        paperId,
-                        rank,
-                        doi,
-                        paperTitle,
-                        year,
-                        date,
-                        journalId,
-                        referenceCount,
-                        citationCount,
-                        familyId,
-                        familyRank)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?)
-)
