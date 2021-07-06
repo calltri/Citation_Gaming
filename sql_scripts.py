@@ -1,11 +1,11 @@
-papers = []
-sql_delete_tables = []
-sql_create_tables = []
-sql_populate_tables = []
+papers = ['']
+sql_delete_tables = ['']
+sql_create_tables = ['']
+sql_populate_tables = ['']
 
 
-sql_papers.append("PaperAuthorAffiliations.txt")
-sql_create_tables.append( '''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations (
+papers.append("PaperAuthorAffiliations.txt")
+sql_create_tables.append('''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations (
                             paperId long,
                             authorId long,
                             affiliationId long,
@@ -17,17 +17,17 @@ sql_create_tables.append( '''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations 
 sql_delete_tables.append("DROP TABLE IF EXISTS PaperAuthorAffiliations;")
 
 
-sql_populate_tables.append( '''INSERT INTO PaperAuthorAffiliations (
+sql_populate_tables.append('''INSERT INTO PaperAuthorAffiliations (
                             paperId,
                             authorId,
                             affiliationId,
                             authorSequenceNumber,
                             originalAuthor,
                             originalAffiliation)
-                            VALUES (?,?,?,?,?,?);''')
-
-sql_papers.append("Papers.txt")
-sql_create_tables.append( """ CREATE TABLE IF NOT EXISTS Papers (
+                            VALUES (?,?,?,?,?,?);'''
+)
+papers.append("Papers.txt")
+sql_create_tables.append(""" CREATE TABLE IF NOT EXISTS Papers (
                             paperId long int PRIMARY KEY,
                             rank integer,
                             doi VARCHAR(60),
@@ -42,7 +42,7 @@ sql_create_tables.append( """ CREATE TABLE IF NOT EXISTS Papers (
                         );""")
 sql_delete_tables.append("DROP TABLE IF EXISTS Papers;")
 
-sql_populate_tables.append( """INSERT INTO Papers (
+sql_populate_tables.append("""INSERT INTO Papers (
                         paperId,
                         rank,
                         doi,

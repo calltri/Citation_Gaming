@@ -33,13 +33,12 @@ def create_table(conn, create_table_sql):
     except Error as e:
         print(e)
 
-def drop_tables(conn, sql_list):
-    """Drops all tables in sql_list
-    @param sql_list (list of sql commands)
+def drop_table(conn, sql):
+    """Drops a table tables in sql_list
+    @param sql (sql command)
     """
     c = conn.cursor()
-    for sql in sql_list:
-        c.execute(sql)
+    c.execute(sql)
 
 def populate_table(conn, fileName, sql):
     """
@@ -151,14 +150,14 @@ def main():
             try:
                 # If input is a valid number, just load one table
                 i = int(input)
-                drop_tables(conn, sql_scripts.sql_delete_tables[i])
+                drop_table(conn, sql_scripts.sql_delete_tables[i])
                 create_table(conn, sql_scripts.sql_create_tables[i])
                 populate_table(conn, sql_scripts.papers[i], sql_scripts.sql_populate_tables[i])
             except ValueError, IndexError:
                 # Can load all
                 if input == "all":
                     for i in range(len(sql_scripts.papers)):
-                        drop_tables(conn, sql_scripts.sql_delete_tables[i])
+                        drop_table(conn, sql_scripts.sql_delete_tables[i])
                         create_table(conn, sql_scripts.sql_create_table[i])
                         populate_table(conn, sql_scripts.papers[i], sql_scripts.sql_populate_tables[i])
                     

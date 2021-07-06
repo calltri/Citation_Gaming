@@ -1,8 +1,10 @@
 input_data
 __pycache__
 db
+db*
 *.pyc
 .ipynb_checkpoints/
 *.swp
 *.db
 *.save
+
