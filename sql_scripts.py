@@ -13,7 +13,7 @@ sql_create_tables.append( '''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations 
                             originalAuthor varchar(60),
                             originalAffiliation varchar(60),
                             PRIMARY KEY (paperId, authorId, affiliationId)
-);'''
+);''')
 sql_delete_tables.append("DROP TABLE IF EXISTS PaperAuthorAffiliations;")
 
 
