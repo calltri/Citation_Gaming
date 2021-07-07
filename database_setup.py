@@ -152,6 +152,7 @@ def main():
                 i = int(input)
                 drop_table(conn, sql_scripts.sql_delete_tables[i])
                 create_table(conn, sql_scripts.sql_create_tables[i])
+                print(sql_scripts.papers)
                 populate_table(conn, sql_scripts.papers[i], sql_scripts.sql_populate_tables[i])
             except ValueError, IndexError:
                 # Can load all
