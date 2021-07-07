@@ -173,6 +173,7 @@ def main():
                 create_table(conn, sql_scripts.sql_create_tables[i])
                 populate_table(conn, sql_scripts.papers[i], sql_scripts.sql_populate_tables[i], criterion)
             except (ValueError, IndexError):
+
                 # Can load all
                 if input == "all":
                     for i in range(len(sql_scripts.papers)):
