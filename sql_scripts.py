@@ -2,9 +2,11 @@ papers = ['']
 sql_delete_tables = ['']
 sql_create_tables = ['']
 sql_populate_tables = ['']
+pickle_files = ['']
 
 
 papers.append("PaperAuthorAffiliations.txt")
+pickle_files.append('PaperAuthorAffiliations')
 sql_create_tables.append('''CREATE TABLE IF NOT EXISTS PaperAuthorAffiliations (
                             paperId long,
                             authorId long,
@@ -27,6 +29,7 @@ sql_populate_tables.append('''INSERT INTO PaperAuthorAffiliations (
                             VALUES (?,?,?,?,?,?);'''
 )
 papers.append("Papers.txt")
+pickle_files.append('Papers')
 sql_create_tables.append(""" CREATE TABLE IF NOT EXISTS Papers (
                             paperId long int PRIMARY KEY,
                             rank integer,
