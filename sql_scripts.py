@@ -55,7 +55,21 @@ sql_populate_tables.append("""INSERT INTO Papers (
                         familyId,
                         familyRank)
                         VALUES (?,?,?,?,?,?,?,?,?,?,?)
-);""")
+;""")
+
+papers.append("PaperFieldsOfStudy.txt")
+sql_create_tables.append(""" CREATE TABLE IF NOT EXISTS PaperFieldsOfStudy (
+                            paperId long int PRIMARY KEY,
+                            fieldOfStudy long int,
+                            FOREIGN KEY (paperId) REFERENCES Papers(paperId)
+                        );""")
+sql_delete_tables.append("DROP TABLE IF EXISTS PaperFieldsOfStudy;")
+
+sql_populate_tables.append("""INSERT INTO PaperFieldsOfStudy (
+                        paperId,
+                        fieldOfStudy)
+                        VALUES (?,?)
+;""")
 
 sql_create_affiliations_table = """ CREATE TABLE IF NOT EXISTS Affiliations (
                                     affiliationId integer PRIMARY KEY,

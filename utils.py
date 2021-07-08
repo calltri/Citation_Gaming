@@ -106,14 +106,11 @@ def call_cidre(graph, theta = 0.15):
     W = nx.adjacency_matrix(net)
     print("W:")
     print(W[:20])
-    # Setting the weights in the matrix for some reason? 
     # Count of citations between two nodes
-
     W.data = np.random.poisson(10, W.data.size)
+
+    # Doing some random stuff for scholastic method!!!!!
     W_threshold = W.copy()
-    print("Threshold:")
-    print(W_threshold[:20])
-    # Setting weights for the threshold too. Why?
     W_threshold.data = np.random.poisson(15, W_threshold.data.size)
     #import pdb; pdb.set_trace()
 

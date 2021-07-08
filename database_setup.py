@@ -68,6 +68,8 @@ def populate_table(conn, fileName, sql):
             row = convert_PaperAuthorAffiliations_types(row)
         elif fileName == "Papers.txt":
             row = convert_papers_types(row)
+        elif fileName == "PaperFieldsOfStudy.txt":
+            row = convert_paperField_types(row)
         else:
             print("Error, file has not been set up yet in populate table")
             break
@@ -75,6 +77,26 @@ def populate_table(conn, fileName, sql):
         # Insert data into database
         cur.execute(sql, row)
     cur.execute("commit")
+
+def convert_paperField_types(row):
+    '''Given a row converts to the appropriate data types
+    Refer to https://docs.microsoft.com/en-us/academic-services/graph/reference-data-schema#paper-author-affiliations
+    for specifics
+
+    Args:
+        @row (list of str)
+    Returns:
+        row in the appropriate data types and tuple
+    '''
+    try:
+        row[0] = int(row[0])
+        row[1] = int(row[1])
+
+        row = tuple(row)
+        return row
+    except ValueError:
+        print("Error, incorrect types")
+        return None
 
 def convert_PaperAuthorAffiliations_types(row):
     '''Given a row converts to the appropriate data types
