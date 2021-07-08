@@ -5,6 +5,7 @@ import tqdm
 import pdb
 import os
 import sys,os
+import seaborn as sns
 import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join("journal-citation-cartels/libs/cidre")))
 from cidre import cidre, filters
@@ -101,16 +102,20 @@ def call_cidre(graph, theta = 0.15):
         graph (DiGraph)
     '''
     # Generate network
-    W = nx.adjacency_matrix(graph)
+    net = nx.karate_club_graph()
+    W = nx.adjacency_matrix(net)
     print("W:")
     print(W[:20])
     # Setting the weights in the matrix for some reason? 
-    #W.data = np.random.poisson(10, W.data.size)
+    # Count of citations between two nodes
+
+    W.data = np.random.poisson(10, W.data.size)
     W_threshold = W.copy()
     print("Threshold:")
     print(W_threshold[:20])
     # Setting weights for the threshold too. Why?
-    #W_threshold.data = np.random.poisson(15, W_threshold.data.size)
+    W_threshold.data = np.random.poisson(15, W_threshold.data.size)
+    #import pdb; pdb.set_trace()
 
     # Generate random community memberships
     community_ids = np.random.choice(2, W.shape[0], replace=True).astype(int)
@@ -128,6 +133,31 @@ def call_cidre(graph, theta = 0.15):
 
     # Detect the cartel groups
     citation_group_table = cidre.detect(W, theta, is_excessive_func)
+
+    # Load the class for drawing a cartel
+    dc = draw.DrawCartel()
+
+    # Set up the canvas
+    fig, axes = plt.subplots(figsize=(10,10))
+    sns.set_style("white")
+    sns.set(font_scale = 1.2)
+    sns.set_style("ticks")
+
+    # Set the name of each node
+    citation_group_table["name"] = citation_group_table["node_id"].apply(lambda x : str(x))
+
+    for cid, cartel in citation_group_table.groupby("group_id"):
+        dc.draw(
+            W,
+            cartel.node_id.values.tolist(),
+            cartel.donor_score.values.tolist(),
+            cartel.recipient_score.values.tolist(),
+            theta,
+            cartel.name.values.tolist(),
+            ax=axes,
+        )
+        plt.show()
+
     return citation_group_table
 
     '''

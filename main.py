@@ -4,6 +4,7 @@ import networkx as nx
 import tqdm
 import pdb
 import utils
+import os
 
 def query_paper_doi_from(tx, dois):
     return tx.run('''
@@ -33,7 +34,8 @@ def query_paper_id_to(tx, ids):
         RETURN p1.PaperId, p2.PaperId
         ''', ids=ids).values()
 
-def compute_basic_citation_graph():
+def compute_basic_citation_graph(fileName):
+    file = os.join.path("input_data", fileName)
     df = pd.read_csv('SCORE_csv.csv')
     dois = [x.upper() for x in df['DOI_CR']]
 
@@ -86,4 +88,4 @@ def compute_basic_citation_graph():
     # Explore Neo4j and see if that has answers
 
 if __name__ == '__main__':
-    utils.evaluate_network()
+    utils.call_cidre(None)
